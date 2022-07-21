@@ -1,3 +1,7 @@
 public class Subtask extends Task {
-    int epicTaskId; //id задачи, к которой относится данная подзадача
+    private int epicTaskId; //id задачи, к которой относится данная подзадача
+
+    public int getEpicTaskId() {
+        return epicTaskId;
+    }
 }
