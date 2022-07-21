@@ -55,18 +55,25 @@ public class Manager {
     }
 
     public void addNewTask (Task task) {
-        tasks.put(nextId, task);
-        nextId++;
+        if (task != null) {
+            task.setId(nextId);
+            tasks.put(nextId, task);
+            nextId++;
+        }
     }
 
     public void addNewTask (EpicTask task) {
-        epicTasks.put(nextId, task);
-        updateEpicStatus(nextId);
-        nextId++;
+        if (task != null) {
+            task.setId(nextId);
+            epicTasks.put(nextId, task);
+            updateEpicStatus(nextId);
+            nextId++;
+        }
     }
 
     public void addNewTask (Subtask task) {
         if (task != null) {
+            task.setId(nextId);
             int id = task.getEpicTaskId();
             if (epicTasks.containsKey(id)) {
                 epicTasks.get(id).addSubtask(nextId);
@@ -85,7 +92,7 @@ public class Manager {
         if (epicTasks.containsKey(id)) {
             //удаляем из списка подзадач, те подзадачи, которые относятся к удаляемому эпику
             for (Integer subtask : epicTasks.get(id).getSubtasks()){
-                subtasks.remove(id);
+                subtasks.remove(subtask);
             }
             epicTasks.remove(id);
             return;
