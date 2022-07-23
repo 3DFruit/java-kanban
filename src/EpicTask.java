@@ -3,9 +3,10 @@ import java.util.ArrayList;
 public class EpicTask extends Task {
     private final ArrayList<Integer> subtasks; //список идентификаторов для подзадач
 
-    public EpicTask(String title, String description, ArrayList<Integer> subtasks) {
-        super(title, description);
-        this.subtasks = subtasks;
+    public EpicTask(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.subtasks = new ArrayList<>();
     }
 
     public ArrayList<Integer> getSubtasks() {
@@ -20,7 +21,20 @@ public class EpicTask extends Task {
         subtasks.remove(id);
     }
 
-    public void addSubtask(Integer id) {
-        subtasks.add(id);
+    protected void addSubtask(Integer id) {
+        if (!subtasks.contains(id)) {
+            subtasks.add(id);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "EpicTask{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", subtasks=" + subtasks +
+                '}';
     }
 }

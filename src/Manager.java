@@ -126,7 +126,11 @@ public class Manager {
         HashMap<Integer, Subtask> result = new HashMap<>();
         if (epicTasks.containsKey(id)) {
             for (Integer subtaskId : epicTasks.get(id).getSubtasks()) {
-                result.put(subtaskId, subtasks.get(subtaskId));
+                Subtask subtask =  subtasks.get(subtaskId);
+                //добавляем в результирующую таблицу только существующие подзадачи
+                if (subtask != null) {
+                    result.put(subtaskId, subtask);
+                }
             }
         }
         return result;
@@ -144,6 +148,9 @@ public class Manager {
             boolean flagNew = true;
             boolean flagDone = true;
             for (Subtask subtask : subtasks.values()) {
+                if (subtask == null) {
+                    continue;
+                }
                 if (subtask.getStatus() != Status.DONE) {
                     flagDone = false;
                 }
@@ -163,5 +170,15 @@ public class Manager {
             }
             epic.setStatus(Status.IN_PROGRESS);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Manager{" +
+                "nextId=" + nextId +
+                ", \ntasks=" + tasks +
+                ", \nepicTasks=" + epicTasks +
+                ", \nsubtasks=" + subtasks +
+                '}';
     }
 }

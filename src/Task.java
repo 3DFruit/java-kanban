@@ -10,9 +10,7 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String title, String description) {
-        this.title = title;
-        this.description = description;
+    protected Task() {
     }
 
     public Status getStatus() {
@@ -45,5 +43,15 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
     }
 }
