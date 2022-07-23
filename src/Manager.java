@@ -77,7 +77,7 @@ public class Manager {
             if (epicTasks.containsKey(id)) {
                 epicTasks.get(id).addSubtask(nextId);
                 subtasks.put(nextId, task);
-                updateEpicStatus(nextId);
+                updateEpicStatus(task.getEpicTaskId());
                 nextId++;
             }
         }
@@ -107,18 +107,26 @@ public class Manager {
     public void updateTask (int id, Object task) {
         //обновление данных происходит, если класс передаваемого объекта соответствует классу, хранимому в HashMap
         if (tasks.containsKey(id) && task.getClass() == tasks.get(id).getClass()) {
-            tasks.put(id, (Task) task);
+            Task newTask = (Task) task;
+            newTask.setId(id);
+            tasks.put(id, newTask);
             return;
         }
         if (epicTasks.containsKey(id) && task.getClass() == epicTasks.get(id).getClass()) {
-            epicTasks.put(id, (EpicTask) task);
+            EpicTask newTask = (EpicTask) task;
+            for (Integer subtask : epicTasks.get(id).getSubtasks()) {
+                newTask.addSubtask(subtask);
+            }
+            newTask.setId(id);
+            epicTasks.put(id, newTask);
             updateEpicStatus(id);
             return;
         }
         if (subtasks.containsKey(id) && task.getClass() == subtasks.get(id).getClass()) {
-            Subtask subtask = (Subtask) task;
-            subtasks.put(id, subtask);
-            updateEpicStatus(subtask.getEpicTaskId());
+            Subtask newTask = (Subtask) task;
+            newTask.setId(id);
+            subtasks.put(id, newTask);
+            updateEpicStatus(newTask.getEpicTaskId());
         }
     }
 
