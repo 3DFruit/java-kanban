@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class EpicTask extends Task {
-    private ArrayList<Integer> subtasks; //список идентификаторов для подзадач
+    private final ArrayList<Integer> subtasks; //список идентификаторов для подзадач
 
     public EpicTask(String title, String description, ArrayList<Integer> subtasks) {
         super(title, description);

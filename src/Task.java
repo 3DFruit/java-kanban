@@ -13,7 +13,6 @@ public class Task {
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
-        this.status = status;
     }
 
     public Status getStatus() {

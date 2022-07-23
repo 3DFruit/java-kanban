@@ -2,9 +2,9 @@ import java.util.HashMap;
 
 public class Manager {
     private int nextId; //поле для создания идентификатора следующей новой задачи
-    private HashMap<Integer, Task> tasks;
-    private HashMap <Integer, EpicTask> epicTasks;
-    private HashMap <Integer, Subtask> subtasks;
+    private final HashMap<Integer, Task> tasks;
+    private final HashMap <Integer, EpicTask> epicTasks;
+    private final HashMap <Integer, Subtask> subtasks;
 
     public Manager() {
         nextId = 0;
