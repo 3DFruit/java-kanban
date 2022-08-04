@@ -1,12 +1,12 @@
 import java.util.HashMap;
 
-public class Manager {
+public class InMemoryTaskManager {
     private int nextId; //поле для создания идентификатора следующей новой задачи
     private final HashMap<Integer, Task> tasks;
     private final HashMap <Integer, EpicTask> epicTasks;
     private final HashMap <Integer, Subtask> subtasks;
 
-    public Manager() {
+    public InMemoryTaskManager() {
         nextId = 0;
         tasks = new HashMap<>();
         epicTasks = new HashMap<>();

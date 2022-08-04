@@ -1,7 +1,7 @@
 public class Main {
 
     public static void main(String[] args) {
-        Manager manager = new Manager();
+        InMemoryTaskManager manager = new InMemoryTaskManager();
         manager.addNewTask(new Task("task1","good description", Status.NEW));
         manager.addNewTask(new Task("task2","very good description", Status.IN_PROGRESS));
         manager.addNewTask(new EpicTask("Epic1", "very epic description"));
