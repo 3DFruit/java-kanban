@@ -144,10 +144,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask (Task task) {
         //обновление данных происходит, если класс передаваемого объекта соответствует классу, хранимому в HashMap
-        /*if (tasks.containsKey(id) && task.getClass() == tasks.get(id).getClass()) {
-            Task newTask = (Task) task;
-            newTask.setId(id);
-            tasks.put(id, newTask);
+        int id = task.getId();
+        if (tasks.containsKey(id) && task.getClass() == tasks.get(id).getClass()) {
+            tasks.put(id, task);
             return;
         }
         if (epicTasks.containsKey(id) && task.getClass() == epicTasks.get(id).getClass()) {
@@ -155,17 +154,15 @@ public class InMemoryTaskManager implements TaskManager {
             for (Integer subtask : epicTasks.get(id).getSubtasks()) {
                 newTask.addSubtask(subtask);
             }
-            newTask.setId(id);
             epicTasks.put(id, newTask);
             updateEpicStatus(id);
             return;
         }
         if (subtasks.containsKey(id) && task.getClass() == subtasks.get(id).getClass()) {
             Subtask newTask = (Subtask) task;
-            newTask.setId(id);
             subtasks.put(id, newTask);
             updateEpicStatus(newTask.getEpicTaskId());
-        }*/
+        }
     }
 
     @Override
