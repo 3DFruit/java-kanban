@@ -1,3 +1,9 @@
+package managers.taskmanager;
+
+import tasks.EpicTask;
+import tasks.Subtask;
+import tasks.Task;
+
 import java.util.HashMap;
 
 public interface TaskManager {

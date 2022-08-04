@@ -1,3 +1,5 @@
+package tasks;
+
 import java.util.ArrayList;
 
 public class EpicTask extends Task {
@@ -21,7 +23,7 @@ public class EpicTask extends Task {
         subtasks.remove(id);
     }
 
-    protected void addSubtask(Integer id) {
+    public void addSubtask(Integer id) {
         if (!subtasks.contains(id)) {
             subtasks.add(id);
         }
@@ -29,7 +31,7 @@ public class EpicTask extends Task {
 
     @Override
     public String toString() {
-        return "EpicTask{" +
+        return "tasks.EpicTask{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

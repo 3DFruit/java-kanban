@@ -1,3 +1,5 @@
+package tasks;
+
 public class Subtask extends Task {
     private final int epicTaskId; //id задачи, к которой относится данная подзадача
 
@@ -12,7 +14,7 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return "Subtask{" +
+        return "tasks.Subtask{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

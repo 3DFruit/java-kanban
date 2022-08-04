@@ -1,3 +1,12 @@
+package managers.taskmanager;
+
+import managers.Managers;
+import managers.history.HistoryManager;
+import tasks.EpicTask;
+import tasks.Status;
+import tasks.Subtask;
+import tasks.Task;
+
 import java.util.HashMap;
 import java.util.List;
 
