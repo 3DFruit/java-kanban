@@ -5,6 +5,7 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.util.HashMap;
+import java.util.List;
 
 public interface TaskManager {
 
@@ -38,4 +39,5 @@ public interface TaskManager {
 
     HashMap<Integer, Subtask> getSubtasksOfEpic(int id);
 
+    List<Task> getHistory();
 }
