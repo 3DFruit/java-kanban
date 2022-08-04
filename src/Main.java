@@ -19,11 +19,18 @@ public class Main {
         System.out.println(manager.getHistory());
         manager.getTaskById(0);
         System.out.println(manager.getHistory());
-        manager.getTaskById(2);
+        manager.getEpicTaskById(2);
         System.out.println(manager.getHistory());
-        manager.getTaskById(3);
+        manager.getSubtaskById(3);
         System.out.println(manager.getHistory());
-        manager.getTaskById(5);
+        manager.getEpicTaskById(5);
+        System.out.println(manager.getHistory());
+        //заполение истории
+        for (int i = 0; i < 6; i++) {
+            manager.getSubtaskById(6);
+        }
+        System.out.println(manager.getHistory());
+        manager.getTaskById(1);
         System.out.println(manager.getHistory());
     }
 }

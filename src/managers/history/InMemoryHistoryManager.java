@@ -24,7 +24,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     public void add(Task task) {
-        if (history.size() > sizeLimit) {
+        if (history.size() >= sizeLimit) {
             history.remove(0);
             history.add(task);
         } else {
