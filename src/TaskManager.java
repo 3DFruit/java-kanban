@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.List;
 
 public interface TaskManager {
 
@@ -21,15 +20,15 @@ public interface TaskManager {
 
     Subtask getSubtaskById(int id);
 
-    void addNewTask(Task task);
+    void addTask(Task task);
 
-    void addNewTask(EpicTask task);
+    void addTask(EpicTask task);
 
-    void addNewTask(Subtask task);
+    void addTask(Subtask task);
 
     void removeTaskById(int id);
 
-    void updateTask(int id, Object task);
+    void updateTask(Task task);
 
     HashMap<Integer, Subtask> getSubtasksOfEpic(int id);
 

@@ -87,7 +87,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addNewTask (Task task) {
+    public void addTask(Task task) {
         if (task != null) {
             task.setId(nextId);
             tasks.put(nextId, task);
@@ -96,7 +96,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addNewTask (EpicTask task) {
+    public void addTask(EpicTask task) {
         if (task != null) {
             task.setId(nextId);
             epicTasks.put(nextId, task);
@@ -106,7 +106,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addNewTask (Subtask task) {
+    public void addTask(Subtask task) {
         if (task != null) {
             task.setId(nextId);
             int id = task.getEpicTaskId();
@@ -142,9 +142,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask (int id, Object task) {
+    public void updateTask (Task task) {
         //обновление данных происходит, если класс передаваемого объекта соответствует классу, хранимому в HashMap
-        if (tasks.containsKey(id) && task.getClass() == tasks.get(id).getClass()) {
+        /*if (tasks.containsKey(id) && task.getClass() == tasks.get(id).getClass()) {
             Task newTask = (Task) task;
             newTask.setId(id);
             tasks.put(id, newTask);
@@ -165,7 +165,7 @@ public class InMemoryTaskManager implements TaskManager {
             newTask.setId(id);
             subtasks.put(id, newTask);
             updateEpicStatus(newTask.getEpicTaskId());
-        }
+        }*/
     }
 
     @Override
