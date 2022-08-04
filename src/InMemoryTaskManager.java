@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,30 +6,20 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks;
     private final HashMap <Integer, EpicTask> epicTasks;
     private final HashMap <Integer, Subtask> subtasks;
+    private final HistoryManager history;
 
-    private final List<Task> history;
+    public List<Task> getHistory(){
+        return history.getHistory();
+    }
 
     public InMemoryTaskManager() {
         nextId = 0;
         tasks = new HashMap<>();
         epicTasks = new HashMap<>();
         subtasks = new HashMap<>();
-        history = new ArrayList<>();
+        history = Managers.getDefaultHistoryManager();
     }
 
-    public List<Task> getHistory(){
-        return history;
-    }
-
-    public void addHistory(Task task){
-        if(history.size() > 10) {
-            history.remove(0);
-            history.add(task);
-        }
-        else {
-            history.add(task);
-        }
-    }
     @Override
     public void removeAllSubtasks() {
         subtasks.clear();
@@ -68,21 +57,21 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskById(int id) {
         Task task = tasks.get(id);
-        addHistory(task);
+        history.add(task);
         return task;
     }
 
     @Override
     public EpicTask getEpicTaskById(int id) {
         EpicTask task = epicTasks.get(id);
-        addHistory(task);
+        history.add(task);
         return task;
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
         Subtask task = subtasks.get(id);
-        addHistory(task);
+        history.add(task);
         return task;
     }
 
@@ -144,6 +133,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask (Task task) {
         //обновление данных происходит, если класс передаваемого объекта соответствует классу, хранимому в HashMap
+        if (task == null) {
+            return;
+        }
         int id = task.getId();
         if (tasks.containsKey(id) && task.getClass() == tasks.get(id).getClass()) {
             tasks.put(id, task);
