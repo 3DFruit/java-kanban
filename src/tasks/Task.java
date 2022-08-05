@@ -1,5 +1,7 @@
 package tasks;
 
+import java.util.Objects;
+
 public class Task {
     protected int id;
     protected String title;
@@ -55,5 +57,31 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    /* в Subtask и EpicTask не добавляем equals, так как при переопределении нарушится правило симметричности
+    *  контракт hashCode требует, при равенстве методом equals, возвращать одинаковые результаты,
+    * поскольку equals не переопределен в наследниках, то и hashCode не стоит переопределять*/
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, status);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        Task task = (Task) obj;
+        return (this.id == task.id) &&
+                Objects.equals(this.title, task.title) &&
+                Objects.equals(this.description, task.description) &&
+                Objects.equals(this.status, task.status);
     }
 }

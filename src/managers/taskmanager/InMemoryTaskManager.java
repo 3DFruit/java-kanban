@@ -7,6 +7,7 @@ import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,18 +51,18 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public HashMap<Integer, Task> getTasks() {
-        return tasks;
+    public List<Task> getTasks() {
+        return new ArrayList<>(tasks.values());
     }
 
     @Override
-    public HashMap<Integer, EpicTask> getEpicTasks() {
-        return epicTasks;
+    public List<EpicTask> getEpicTasks() {
+        return new ArrayList<>(epicTasks.values());
     }
 
     @Override
-    public HashMap<Integer, Subtask> getSubtasks() {
-        return subtasks;
+    public List<Subtask> getSubtasks() {
+        return new ArrayList<>(subtasks.values());
     }
 
     @Override
@@ -168,14 +169,14 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public HashMap<Integer, Subtask> getSubtasksOfEpic(int id) {
-        HashMap<Integer, Subtask> result = new HashMap<>();
+    public List<Subtask> getSubtasksOfEpic(int id) {
+        List<Subtask> result = new ArrayList<>();
         if (epicTasks.containsKey(id)) {
             for (Integer subtaskId : epicTasks.get(id).getSubtasks()) {
                 Subtask subtask = subtasks.get(subtaskId);
                 //добавляем в результирующую таблицу только существующие подзадачи
                 if (subtask != null) {
-                    result.put(subtaskId, subtask);
+                    result.add(subtask);
                 }
             }
         }
@@ -185,7 +186,7 @@ public class InMemoryTaskManager implements TaskManager {
     private void updateEpicStatus(int id) {
         EpicTask epic = epicTasks.get(id);
         if (epic != null) {
-            HashMap<Integer, Subtask> subtasks = getSubtasksOfEpic(id);
+            List<Subtask> subtasks = getSubtasksOfEpic(id);
             if (subtasks.size() == 0) {
                 epic.setStatus(Status.NEW);
                 return;
@@ -193,7 +194,7 @@ public class InMemoryTaskManager implements TaskManager {
             //проверка статусов подзадач
             boolean flagNew = true;
             boolean flagDone = true;
-            for (Subtask subtask : subtasks.values()) {
+            for (Subtask subtask : subtasks) {
                 if (subtask == null) {
                     continue;
                 }
@@ -204,7 +205,9 @@ public class InMemoryTaskManager implements TaskManager {
                     flagNew = false;
                 }
                 //если оба флага приняли значение false, то не имеет смысла продолжать цикл
-                if (!flagDone && !flagNew) break;
+                if (!flagDone && !flagNew) {
+                    break;
+                }
             }
             if (flagNew) {
                 epic.setStatus(Status.NEW);

@@ -2,7 +2,7 @@ package managers.history;
 
 import tasks.Task;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
@@ -11,12 +11,12 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     public InMemoryHistoryManager() {
         sizeLimit = 10;
-        history = new ArrayList<>();
+        history = new LinkedList<>();
     }
 
     public InMemoryHistoryManager(int limit) {
         sizeLimit = limit;
-        history = new ArrayList<>();
+        history = new LinkedList<>();
     }
 
     public List<Task> getHistory() {

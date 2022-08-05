@@ -39,4 +39,9 @@ public class EpicTask extends Task {
                 ", subtasks=" + subtasks +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 }
