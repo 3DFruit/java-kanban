@@ -59,9 +59,6 @@ public class Task {
                 '}';
     }
 
-    /* в Subtask и EpicTask не добавляем equals, так как при переопределении нарушится правило симметричности
-    *  контракт hashCode требует, при равенстве методом equals, возвращать одинаковые результаты,
-    * поскольку equals не переопределен в наследниках, то и hashCode не стоит переопределять*/
     @Override
     public int hashCode() {
         return Objects.hash(id, title, description, status);

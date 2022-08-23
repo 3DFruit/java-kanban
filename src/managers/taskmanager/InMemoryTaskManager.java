@@ -87,26 +87,28 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addTask(Task task) {
+    public int addTask(Task task) {
         if (task != null) {
             task.setId(nextId);
             tasks.put(nextId, task);
-            nextId++;
+            return nextId++;
         }
+        return -1;
     }
 
     @Override
-    public void addTask(EpicTask task) {
+    public int addTask(EpicTask task) {
         if (task != null) {
             task.setId(nextId);
             epicTasks.put(nextId, task);
             updateEpicStatus(nextId);
-            nextId++;
+            return nextId++;
         }
+        return -1;
     }
 
     @Override
-    public void addTask(Subtask task) {
+    public int addTask(Subtask task) {
         if (task != null) {
             task.setId(nextId);
             int id = task.getEpicTaskId();
@@ -114,16 +116,18 @@ public class InMemoryTaskManager implements TaskManager {
                 epicTasks.get(id).addSubtask(nextId);
                 subtasks.put(nextId, task);
                 updateEpicStatus(task.getEpicTaskId());
-                nextId++;
+                return nextId++;
             }
         }
+        return -1;
     }
 
     @Override
-    public void removeTaskById(int id) {
+    public int removeTaskById(int id) {
+        historyManager.remove(id);
         if (tasks.containsKey(id)) {
             tasks.remove(id);
-            return;
+            return id;
         }
         if (epicTasks.containsKey(id)) {
             //удаляем из списка подзадач, те подзадачи, которые относятся к удаляемому эпику
@@ -131,26 +135,27 @@ public class InMemoryTaskManager implements TaskManager {
                 subtasks.remove(subtask);
             }
             epicTasks.remove(id);
-            return;
+            return id;
         }
         if (subtasks.containsKey(id)) {
             int epicId = subtasks.get(id).getEpicTaskId();
             epicTasks.get(epicId).removeSubtask(id); //удаляем подзадачу из эпика, к которому она относится
             updateEpicStatus(epicId);
             subtasks.remove(id);
+            return id;
         }
+        return -1;
     }
 
     @Override
-    public void updateTask(Task task) {
+    public int updateTask(Task task) {
         //обновление данных происходит, если класс передаваемого объекта соответствует классу, хранимому в HashMap
         if (task == null) {
-            return;
+            return -1;
         }
         int id = task.getId();
         if (tasks.containsKey(id) && task.getClass() == tasks.get(id).getClass()) {
             tasks.put(id, task);
-            return;
         }
         if (epicTasks.containsKey(id) && task.getClass() == epicTasks.get(id).getClass()) {
             EpicTask newTask = (EpicTask) task;
@@ -159,13 +164,13 @@ public class InMemoryTaskManager implements TaskManager {
             }
             epicTasks.put(id, newTask);
             updateEpicStatus(id);
-            return;
         }
         if (subtasks.containsKey(id) && task.getClass() == subtasks.get(id).getClass()) {
             Subtask newTask = (Subtask) task;
             subtasks.put(id, newTask);
             updateEpicStatus(newTask.getEpicTaskId());
         }
+        return id;
     }
 
     @Override

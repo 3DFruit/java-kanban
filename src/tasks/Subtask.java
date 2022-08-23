@@ -1,7 +1,7 @@
 package tasks;
 
 public class Subtask extends Task {
-    private final int epicTaskId; //id задачи, к которой относится данная подзадача
+    private final int epicTaskId;
 
     public int getEpicTaskId() {
         return epicTaskId;

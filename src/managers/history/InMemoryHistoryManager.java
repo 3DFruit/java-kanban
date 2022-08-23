@@ -31,4 +31,8 @@ public class InMemoryHistoryManager implements HistoryManager {
             history.add(task);
         }
     }
+
+    public void remove(int id) {
+        history.removeIf(task -> task.getId() == id);
+    }
 }
