@@ -1,9 +1,10 @@
 package tasks;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EpicTask extends Task {
-    private final ArrayList<Integer> subtasks; //список идентификаторов для подзадач
+    private final List<Integer> subtasks; //список идентификаторов для подзадач
 
     public EpicTask(String title, String description) {
         this.title = title;
@@ -11,7 +12,7 @@ public class EpicTask extends Task {
         this.subtasks = new ArrayList<>();
     }
 
-    public ArrayList<Integer> getSubtasks() {
+    public List<Integer> getSubtasks() {
         return subtasks;
     }
 

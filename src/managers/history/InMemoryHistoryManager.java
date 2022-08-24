@@ -5,10 +5,11 @@ import tasks.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private final int sizeLimit;
-    private final HashMap<Integer, Node<Task>> history;
+    private final Map<Integer, Node<Task>> history;
 
     private Node<Task> head;
     private Node<Task> tail;
@@ -29,8 +30,8 @@ public class InMemoryHistoryManager implements HistoryManager {
         return node;
     }
 
-    public ArrayList<Task> getTasks() {
-        ArrayList<Task> tasks = new ArrayList<>();
+    public List<Task> getTasks() {
+        List<Task> tasks = new ArrayList<>();
         Node<Task> currentNode = head;
         while (currentNode != null) {
             tasks.add(currentNode.data);
