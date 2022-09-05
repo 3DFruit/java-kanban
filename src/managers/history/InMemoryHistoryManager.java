@@ -40,7 +40,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         return tasks;
     }
 
-    public Node<Task> removeNode(Node<Task> node) {
+    public void removeNode(Node<Task> node) {
 
         Node<Task> prev = node.prev;
         Node<Task> next = node.next;
@@ -57,14 +57,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         node.prev = null;
         node.next = null;
-        return node;
-    }
-
-    public InMemoryHistoryManager() {
-        sizeLimit = 10;
-        history = new HashMap<>();
-        head = null;
-        tail = null;
     }
 
     public InMemoryHistoryManager(int limit) {

@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
-    private int nextId; //поле для создания идентификатора следующей новой задачи
-    private final Map<Integer, Task> tasks;
-    private final Map<Integer, EpicTask> epicTasks;
-    private final Map<Integer, Subtask> subtasks;
-    private final HistoryManager historyManager;
+    protected int nextId; //поле для создания идентификатора следующей новой задачи
+    protected final Map<Integer, Task> tasks;
+    protected final Map<Integer, EpicTask> epicTasks;
+    protected final Map<Integer, Subtask> subtasks;
+    protected final HistoryManager historyManager;
 
     public InMemoryTaskManager() {
         this.nextId = 0;
@@ -190,7 +190,7 @@ public class InMemoryTaskManager implements TaskManager {
         return result;
     }
 
-    private void updateEpicStatus(int id) {
+    protected void updateEpicStatus(int id) {
         EpicTask epic = epicTasks.get(id);
         if (epic != null) {
             List<Subtask> subtasks = getSubtasksOfEpic(id);
