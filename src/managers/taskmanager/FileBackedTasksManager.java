@@ -102,8 +102,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         if (task instanceof EpicTask) {
             epicTasks.put(id, (EpicTask) task);
             updateEpicStatus(id);
-        }
-        else if (task instanceof Subtask) {
+        } else if (task instanceof Subtask) {
             Subtask subtask = (Subtask) task;
             int epicId = subtask.getEpicTaskId();
             if (epicTasks.containsKey(epicId)) {
