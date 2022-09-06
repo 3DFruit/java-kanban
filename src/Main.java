@@ -7,8 +7,8 @@ public class Main {
 
     public static void main(String[] args) {
         FileBackedTasksManager.main(args);
+        System.out.println("\nЗагруженный FileBackedTasksManager:");
         TaskManager manager = FileBackedTasksManager.loadFromFile(new File("resources/history.csv"));
         System.out.println(manager);
-        System.out.println(manager.getHistory());
     }
 }

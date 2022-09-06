@@ -46,6 +46,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         manager.getSubtaskById(4);
         manager.getSubtaskById(5);
         manager.getEpicTaskById(2);
+        System.out.println("Созданный FileBackedTasksManager:");
+        System.out.println(manager);
     }
 
     public static FileBackedTasksManager loadFromFile(File file) {

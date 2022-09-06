@@ -230,6 +230,16 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public String toString() {
-        return "Manager{" + "nextId=" + nextId + ", \ntasks=" + tasks + ", \nepicTasks=" + epicTasks + ", \nsubtasks=" + subtasks + '}';
+        return "Manager{"
+                + "nextId="
+                + nextId
+                + ", \ntasks="
+                + tasks
+                + ", \nepicTasks="
+                + epicTasks
+                + ", \nsubtasks="
+                + subtasks
+                + "\nhistoryManager=" +
+                historyManager.getHistory() + "}";
     }
 }
