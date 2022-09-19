@@ -54,14 +54,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return new FileBackedTasksManager(file);
     }
 
-    private void load() {
+    private void load() throws ManagerSaveException {
         try {
             String dataStream = Files.readString(Path.of(filePath.toString()), StandardCharsets.UTF_8);
             if (dataStream.isBlank()) {
                 return;
             }
             int index = dataStream.lastIndexOf("\n\n"); //индекс на котором заканчиваются данные тасков
-            String[] taskLines = dataStream.substring(0, index).split("\n");
+            String[] taskLines = dataStream.substring(0, index).split("\r?\n");
 
             int maxId = -1; //следим за загружаемыми имндексами, чтобы корректно выдавать индексы после загрузки
             for (int i = 1; i < taskLines.length; i++) {
@@ -118,7 +118,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-    private void save() {
+    private void save() throws ManagerSaveException {
         try (FileWriter writer = new FileWriter(filePath, StandardCharsets.UTF_8)) {
             writer.write("id,type,name,status,description,epic\n");
             for (Task task : this.getTasks()) {

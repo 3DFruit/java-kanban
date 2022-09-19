@@ -74,14 +74,13 @@ public class InMemoryHistoryManager implements HistoryManager {
         int id = task.getId();
         if (history.containsKey(id)) {
             removeNode(history.get(id));
-            history.put(task.getId(), linkLast(task));
         } else {
             if (history.size() >= sizeLimit) {
                 history.remove(head.data.getId());
                 removeNode(head);
             }
-            history.put(task.getId(), linkLast(task));
         }
+        history.put(task.getId(), linkLast(task));
     }
 
     public void remove(int id) {
