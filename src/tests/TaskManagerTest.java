@@ -61,7 +61,10 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void addSubtaskTest() {
-        Subtask subtask = new Subtask("Test subtask for history", "test description", Status.NEW, 0);
+        Subtask subtask = new Subtask("Test subtask for history",
+                "test description",
+                Status.NEW,
+                0);
         int taskId = manager.addTask(subtask);
 
         assertEquals(-1, taskId, "неверный идентификатор эпика");
