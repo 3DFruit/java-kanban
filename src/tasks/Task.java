@@ -1,27 +1,58 @@
 package tasks;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Task {
+public class Task implements Comparable<Task> {
     protected int id;
     protected String title;
     protected String description;
     protected Status status;
 
-    public Task(String title, String description, Status status) {
+    protected long duration;
+    protected LocalDateTime startTime;
+
+    public Task(String title, String description, Status status, long duration, LocalDateTime startTime) {
         this.title = title;
         this.description = description;
         this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
-    public Task(int id, String title, String description, Status status) {
+    public Task(int id, String title, String description, Status status, long duration, LocalDateTime startTime) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     protected Task() {
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(Duration.ofMinutes(this.duration));
     }
 
     public Status getStatus() {
@@ -63,6 +94,8 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
                 '}';
     }
 
@@ -86,6 +119,16 @@ public class Task {
         return (this.id == task.id) &&
                 Objects.equals(this.title, task.title) &&
                 Objects.equals(this.description, task.description) &&
-                Objects.equals(this.status, task.status);
+                Objects.equals(this.status, task.status) &&
+                this.duration == task.duration &&
+                Objects.equals(this.startTime, task.startTime);
+    }
+
+    @Override
+    public int compareTo(@NotNull Task o) {
+        if (o.startTime == null) {
+            return -1;
+        }
+        return startTime.compareTo(o.startTime);
     }
 }

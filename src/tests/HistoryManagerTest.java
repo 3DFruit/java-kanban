@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import tasks.Status;
 import tasks.Task;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +20,8 @@ class HistoryManagerTest {
     @BeforeEach
     void setManager(){
         historyManager = new InMemoryHistoryManager(10);
-        task = new Task(0, "Test task for history", "test description", Status.NEW);
+        task = new Task(0, "Test task for history", "test description", Status.NEW,
+                15,LocalDateTime.now());
     }
 
 
@@ -51,7 +53,8 @@ class HistoryManagerTest {
     void removeTest() {
         Task[] tasks = new Task[7];
         for (int i = 0; i < tasks.length; i++) {
-            tasks[i] = new Task(i, "Test task" + i + " for history", "test description", Status.NEW);
+            tasks[i] = new Task(i, "Test task" + i + " for history", "test description", Status.NEW,
+                    15,LocalDateTime.now());
             historyManager.add(tasks[i]);
         }
 

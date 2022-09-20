@@ -1,8 +1,0 @@
-id,type,name,status,description,epic
-2,EPICTASK,Epic1,IN_PROGRESS,very epic description,
-6,EPICTASK,Epic2,NEW,epic description,
-3,SUBTASK,Sub1,NEW,desc1,2
-4,SUBTASK,Sub2,IN_PROGRESS,desc2,2
-5,SUBTASK,Sub3,IN_PROGRESS,desc3,2
-
-4,5,2

@@ -14,6 +14,13 @@ public class InMemoryHistoryManager implements HistoryManager {
     private Node<Task> head;
     private Node<Task> tail;
 
+    public InMemoryHistoryManager(int limit) {
+        sizeLimit = limit;
+        history = new HashMap<>();
+        head = null;
+        tail = null;
+    }
+
     public Node<Task> linkLast(Task task) {
         if (head == null) {
             head = new Node<>(null, task, null);
@@ -61,13 +68,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         node.prev = null;
         node.next = null;
-    }
-
-    public InMemoryHistoryManager(int limit) {
-        sizeLimit = limit;
-        history = new HashMap<>();
-        head = null;
-        tail = null;
     }
 
     public List<Task> getHistory() {
