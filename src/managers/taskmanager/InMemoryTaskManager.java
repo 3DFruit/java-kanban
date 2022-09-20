@@ -158,6 +158,7 @@ public class InMemoryTaskManager implements TaskManager {
         int id = task.getId();
         if (tasks.containsKey(id) && task.getClass() == tasks.get(id).getClass()) {
             tasks.put(id, task);
+            return id;
         }
         if (epicTasks.containsKey(id) && task.getClass() == epicTasks.get(id).getClass()) {
             EpicTask newTask = (EpicTask) task;
@@ -166,13 +167,15 @@ public class InMemoryTaskManager implements TaskManager {
             }
             epicTasks.put(id, newTask);
             updateEpicStatus(id);
+            return id;
         }
         if (subtasks.containsKey(id) && task.getClass() == subtasks.get(id).getClass()) {
             Subtask newTask = (Subtask) task;
             subtasks.put(id, newTask);
             updateEpicStatus(newTask.getEpicTaskId());
+            return id;
         }
-        return id;
+        return -1;
     }
 
     @Override
