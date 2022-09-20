@@ -34,6 +34,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllSubtasks() {
+        for (int taskId : epicTasks.keySet()) {
+            historyManager.remove(taskId);
+        }
         subtasks.clear();
         for (EpicTask epicTask : epicTasks.values()) { //очищаем списки подзадач для каждого эпика
             epicTask.clearSubtasks();
@@ -42,12 +45,18 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllEpicTasks() {
+        for (int taskId : subtasks.keySet()) {
+            historyManager.remove(taskId);
+        }
         epicTasks.clear();
         subtasks.clear(); //удаляем подзадачи, так как не останется эпиков, к котоорым они относятся
     }
 
     @Override
     public void removeAllTasks() {
+        for (int taskId : tasks.keySet()) {
+            historyManager.remove(taskId);
+        }
         tasks.clear();
     }
 

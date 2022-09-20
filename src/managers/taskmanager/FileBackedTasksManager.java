@@ -27,6 +27,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public FileBackedTasksManager(File filePath) {
         super();
+        try {
+            if (filePath.createNewFile()) {
+                System.out.println("Файл создан");
+            }
+        }
+        catch  (IOException exception) {
+            exception.printStackTrace();
+        }
         this.filePath = filePath;
         load();
     }
