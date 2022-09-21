@@ -44,14 +44,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static void main(String[] args) {
-        /*TaskManager manager = new FileBackedTasksManager();
-        manager.addTask(new Task("task1", "good description", Status.NEW));
-        manager.addTask(new Task("task2", "very good description", Status.IN_PROGRESS));
+        TaskManager manager = new FileBackedTasksManager();
+        manager.addTask(new Task("task1", "good description", Status.NEW, 15, null));
+        manager.addTask(new Task("task2", "very good description", Status.IN_PROGRESS, 30, LocalDateTime.of(2022, 11, 12, 15, 20)));
         int epicId = manager.addTask(new EpicTask("Epic1", "very epic description"));
-        manager.addTask(new Subtask("Sub1", "desc1", Status.NEW, epicId));
-        manager.addTask(new Subtask("Sub2", "desc2", Status.IN_PROGRESS, epicId));
-        manager.addTask(new Subtask("Sub3", "desc3", Status.IN_PROGRESS, epicId));
         manager.addTask(new EpicTask("Epic2", "epic description"));
+        manager.addTask(new Subtask("Sub1", "desc1", Status.NEW, 15, LocalDateTime.of(2023, 1, 13, 8, 0), epicId));
+        manager.addTask(new Subtask("Sub2", "desc2", Status.IN_PROGRESS, 45, LocalDateTime.of(2022, 11, 12, 15, 30), epicId));
+        manager.addTask(new Subtask("Sub3", "desc3", Status.IN_PROGRESS, 120, LocalDateTime.of(2022, 11, 12, 15, 31), epicId));
+
         manager.getTaskById(0);
         manager.getEpicTaskById(2);
         manager.getTaskById(1);
@@ -59,7 +60,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         manager.getSubtaskById(5);
         manager.getEpicTaskById(2);
         System.out.println("Созданный FileBackedTasksManager:");
-        System.out.println(manager);*/
+        //System.out.println(manager);
+        List<Task> tasks = manager.getPrioritizedTasks();
+        System.out.println("Отсортированные задачи:");
+        for (Task task : tasks) {
+            System.out.println(task.toString());
+        }
     }
 
     public static FileBackedTasksManager loadFromFile(File file) {
@@ -116,6 +122,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         if (task instanceof EpicTask) {
             epicTasks.put(id, (EpicTask) task);
             updateEpicStatus(id);
+            updateEpicTime(id);
+            sortedTasks.add(task);
         } else if (task instanceof Subtask) {
             Subtask subtask = (Subtask) task;
             int epicId = subtask.getEpicTaskId();
@@ -123,10 +131,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 epicTasks.get(epicId).addSubtask(id);
                 subtasks.put(id, subtask);
                 updateEpicStatus(subtask.getEpicTaskId());
+                updateEpicTime(subtask.getEpicTaskId());
+                sortedTasks.add(subtask);
             }
         } else {
             task.setId(id);
             tasks.put(id, task);
+            sortedTasks.add(task);
         }
     }
 
@@ -212,7 +223,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 task.getTitle(),
                 String.valueOf(task.getStatus()),
                 task.getDescription(),
-                task.getStartTime().format(DATE_TIME_FORMATTER),
+                task.getStartTime() == null ? "null" : task.getStartTime().format(DATE_TIME_FORMATTER),
                 String.valueOf(task.getDuration()),
                 String.valueOf(task instanceof Subtask ? ((Subtask) task).getEpicTaskId() : "")
         );
@@ -225,11 +236,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String name = items[2];
         Status status = Status.valueOf(items[3]);
         String description = items[4];
-        LocalDateTime startTime = LocalDateTime.parse(items[5], DATE_TIME_FORMATTER);
+        LocalDateTime startTime = items[5].equals("null") ? null : LocalDateTime.parse(items[5], DATE_TIME_FORMATTER);
         long duration = Long.parseLong(items[6]);
         switch (type) {
             case SUBTASK:
-                int epicId = Integer.parseInt(items[5]);
+                int epicId = Integer.parseInt(items[7]);
                 return new Subtask(id, name, description, status, duration, startTime, epicId);
             case EPICTASK:
                 return new EpicTask(id, name, description);

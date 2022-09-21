@@ -1,0 +1,5 @@
+id,type,name,status,description,start_time,duration,epic
+67,TASK,task1,NEW,good description,20.09.2022|23:07,15,
+68,TASK,task2,IN_PROGRESS,very good description,20.09.2022|23:07,15,
+69,EPICTASK,Epic1,NEW,very epic description,null,0,
+
