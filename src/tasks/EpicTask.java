@@ -29,6 +29,7 @@ public class EpicTask extends Task {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+
     public List<Integer> getSubtasks() {
         return subtasks;
     }

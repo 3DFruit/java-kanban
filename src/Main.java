@@ -11,7 +11,7 @@ public class Main {
         FileBackedTasksManager.main(args);
         System.out.println("\nЗагруженный FileBackedTasksManager:");
         TaskManager manager = FileBackedTasksManager.loadFromFile(new File("resources/history.csv"));
-        //System.out.println(manager);
+        System.out.println(manager);
 
         List<Task> tasks = manager.getPrioritizedTasks();
         System.out.println("Отсортированные задачи:");

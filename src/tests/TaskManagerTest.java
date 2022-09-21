@@ -11,6 +11,7 @@ import tasks.Task;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +22,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     protected abstract T createManager();
 
     @BeforeEach
-    void getManager(){
+    void getManager() {
         manager = createManager();
     }
 
@@ -164,8 +165,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
                 manager.getEpicTaskById(epicId).getStartTime()
         );
         assertEquals(LocalDateTime
-                .of(2022, 9, 22, 22, 30)
-                .plus(Duration.ofMinutes(15)),
+                        .of(2022, 9, 22, 22, 30)
+                        .plus(Duration.ofMinutes(15)),
                 manager.getEpicTaskById(epicId).getEndTime()
         );
         manager.addTask(new Subtask("Test subtask2",
@@ -210,7 +211,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
                 15,
                 LocalDateTime.now()
         );
-        int taskId =  manager.addTask(task);
+        int taskId = manager.addTask(task);
         Task updatedTask = new Task(taskId,
                 "updated1 task",
                 "test description",
@@ -282,8 +283,50 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(-1, manager.removeTaskById(2));
 
         Task task = new Task("Test task", "test description", Status.NEW, 15, LocalDateTime.now());
-        int taskId =  manager.addTask(task);
+        int taskId = manager.addTask(task);
         manager.removeTaskById(taskId);
         assertEquals(0, manager.getTasks().size());
+    }
+
+    @Test
+    void taskSortingTest() {
+        List<Task> expectedList = new LinkedList<>();
+        Task task1 = new Task("task1", "good description", Status.NEW, 15, null);
+        Task task2 = new Task("task2", "very good description", Status.IN_PROGRESS, 30,
+                LocalDateTime.of(2022, 10, 20, 15, 20));
+        EpicTask epic = new EpicTask("Epic1", "very epic description");
+        manager.addTask(task1);
+        manager.addTask(task2);
+        int epicId = manager.addTask(epic);
+        Subtask sub1 = new Subtask("Sub1", "desc1", Status.NEW, 15,
+                LocalDateTime.of(2023, 1, 13, 8, 0), epicId);
+        Subtask sub2 = new Subtask("Sub2", "desc2", Status.IN_PROGRESS, 45,
+                LocalDateTime.of(2022, 11, 12, 15, 30), epicId);
+        Subtask sub3 = new Subtask("Sub3", "desc3", Status.IN_PROGRESS, 120,
+                LocalDateTime.of(2022, 11, 11, 8, 30), epicId);
+        manager.addTask(sub1);
+        manager.addTask(sub2);
+        manager.addTask(sub3);
+        expectedList.add(task2);
+        expectedList.add(epic);
+        expectedList.add(sub3);
+        expectedList.add(sub2);
+        expectedList.add(sub1);
+        expectedList.add(task1);
+        assertArrayEquals(expectedList.toArray(new Task[0]), manager.getPrioritizedTasks().toArray(new Task[0]));
+    }
+
+    @Test
+    void testFixIntersections() {
+        long duration = 45;
+        LocalDateTime startTime = LocalDateTime.of(2022, 11, 20, 15, 20);
+        LocalDateTime secondStartTime = startTime.plus(Duration.ofMinutes(15));
+        LocalDateTime expectedSecondStarTime = startTime.plus(Duration.ofMinutes(duration));
+        Task task1 = new Task("task1", "good description", Status.NEW, duration, startTime);
+        Task task2 = new Task("task2", "very good description", Status.IN_PROGRESS, duration, secondStartTime);
+        manager.addTask(task1);
+        int taskId = manager.addTask(task2);
+
+        assertEquals(expectedSecondStarTime, manager.getTaskById(taskId).getStartTime());
     }
 }

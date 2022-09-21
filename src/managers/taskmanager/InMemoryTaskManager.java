@@ -77,7 +77,12 @@ public class InMemoryTaskManager implements TaskManager {
             sortedTasks.remove(epic);
         }
         epicTasks.clear();
-        subtasks.clear(); //удаляем подзадачи, так как не останется эпиков, к котоорым они относятся
+        //удаляем подзадачи, так как не останется эпиков, к котоорым они относятся
+        for (Subtask subtask : subtasks.values()) {
+            historyManager.remove(subtask.getId());
+            sortedTasks.remove(subtask);
+        }
+        subtasks.clear();
     }
 
     @Override
@@ -315,7 +320,7 @@ public class InMemoryTaskManager implements TaskManager {
                 if (start == null) {
                     continue;
                 }
-                if (start.isBefore(firstSubtaskStart)){
+                if (start.isBefore(firstSubtaskStart)) {
                     firstSubtaskStart = start;
                 }
             }
@@ -326,7 +331,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    public List<Task> getPrioritizedTasks(){
+    public List<Task> getPrioritizedTasks() {
         return new LinkedList<>(sortedTasks);
     }
 

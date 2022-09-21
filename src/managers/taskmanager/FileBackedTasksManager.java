@@ -60,7 +60,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         manager.getSubtaskById(5);
         manager.getEpicTaskById(2);
         System.out.println("Созданный FileBackedTasksManager:");
-        //System.out.println(manager);
+        System.out.println(manager);
         List<Task> tasks = manager.getPrioritizedTasks();
         System.out.println("Отсортированные задачи:");
         for (Task task : tasks) {
@@ -95,7 +95,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     this.addTaskWithCustomId(task);
                 }
             }
-            nextId = maxId;
+            nextId = Integer.max(maxId, 0);
 
             String historyDataStream = dataStream.substring(index + 2);
             if (historyDataStream.isBlank()) {
