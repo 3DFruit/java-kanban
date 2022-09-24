@@ -332,6 +332,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public List<Task> getPrioritizedTasks() {
+        //Задание:
+        //Напишите новый метод getPrioritizedTasks, возвращающий список задач и подзадач в заданном порядке.
+        //Сложность получения должна быть уменьшена с O(n log n) до O(n)
+        //
+        //Из-за пункта со сложностью, я понял задание так, что требуется преобразовывать хранимый TreeSet
+        //в другую структуру данных. Ведь просто возвращение TreeSet даст сложность O(1)
         return new LinkedList<>(sortedTasks);
     }
 
