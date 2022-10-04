@@ -68,11 +68,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-    public static FileBackedTasksManager loadFromFile(File file) {
-        return new FileBackedTasksManager(file);
-    }
-
-    private void load() throws ManagerSaveException {
+        private void load() throws ManagerSaveException {
         try {
             String dataStream = Files.readString(Path.of(filePath.toString()), StandardCharsets.UTF_8);
             if (dataStream.isBlank()) {
@@ -206,13 +202,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public void removeAllEpicTasks() {
-        super.removeAllTasks();
+        super.removeAllEpicTasks();
         save();
     }
 
     @Override
     public void removeAllTasks() {
-        super.removeAllEpicTasks();
+        super.removeAllTasks();
         save();
     }
 

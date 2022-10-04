@@ -27,7 +27,7 @@ public class InMemoryTaskManager implements TaskManager {
         this.subtasks = new HashMap<>();
         this.historyManager = Managers.getDefaultHistoryManager();
         this.sortedTasks = new TreeSet<>((o1, o2) -> {
-            if (o1 == o2) {
+            if (o1.equals(o2)) {
                 return 0;
             }
             LocalDateTime firstStart = o1.getStartTime();
@@ -326,7 +326,9 @@ public class InMemoryTaskManager implements TaskManager {
             }
             epic.setStartTime(firstSubtaskStart);
             epic.setDuration(fullDuration);
-            epic.setEndTime(firstSubtaskStart.plus(Duration.ofMinutes(fullDuration)));
+            if (firstSubtaskStart != null ) {
+                epic.setEndTime(firstSubtaskStart.plus(Duration.ofMinutes(fullDuration)));
+            }
             sortedTasks.add(epic);
         }
     }
