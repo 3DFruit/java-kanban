@@ -1,7 +1,11 @@
 package managers.taskmanager;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -240,16 +244,21 @@ public class HttpTaskServer {
                     String bodyRequest = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
                     try {
                         EpicTask receivedTask = gson.fromJson(bodyRequest, EpicTask.class);
-                        int id = receivedTask.getId();
-                        if (manager.getEpicTaskById(id) != null) {
-                            manager.updateTask(receivedTask);
-                            rCode = 200;
-                            response = "Эпик с id=" + id + " обновлен";
+                        if (receivedTask.getSubtasks() == null) {
+                            rCode = 400;
+                            response = "для Эпика требуется передать параметр subtasks";
                         }
                         else {
-                            int createdId = manager.addTask(receivedTask);
-                            rCode = 201;
-                            response = "Создан эпик с id=" + createdId;
+                            int id = receivedTask.getId();
+                            if (manager.getEpicTaskById(id) != null) {
+                                manager.updateTask(receivedTask);
+                                rCode = 200;
+                                response = "Эпик с id=" + id + " обновлен";
+                            } else {
+                                int createdId = manager.addTask(receivedTask);
+                                rCode = 201;
+                                response = "Создан эпик с id=" + createdId;
+                            }
                         }
                     } catch (JsonSyntaxException e) {
                         response = "Неверный формат запроса";
