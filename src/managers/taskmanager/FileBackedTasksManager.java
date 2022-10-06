@@ -267,7 +267,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return builder.toString();
     }
 
-    private static List<Integer> historyFromString(String value) {
+    protected static List<Integer> historyFromString(String value) {
         List<Integer> history = new ArrayList<>();
         String[] items = value.split(",");
         for (String item : items) {

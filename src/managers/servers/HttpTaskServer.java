@@ -5,13 +5,12 @@ import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import managers.taskmanager.FileBackedTasksManager;
+import managers.Managers;
 import managers.taskmanager.TaskManager;
 import tasks.EpicTask;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -21,8 +20,8 @@ public class HttpTaskServer {
     final TaskManager manager;
     final HttpServer httpServer;
 
-    public HttpTaskServer(InetSocketAddress port) throws IOException {
-        this.manager = FileBackedTasksManager.loadFromFile(new File("resources/HttpServerFile.csv"));
+    public HttpTaskServer(InetSocketAddress port) throws IOException, InterruptedException {
+        this.manager = Managers.getDefault();
         this.httpServer = HttpServer.create(port, 0);
         httpServer.createContext("/tasks/task/", new TaskHandler());
         httpServer.createContext("/tasks/epic/", new EpicHandler());
