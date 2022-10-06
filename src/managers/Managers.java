@@ -2,11 +2,8 @@ package managers;
 
 import managers.history.HistoryManager;
 import managers.history.InMemoryHistoryManager;
-import managers.taskmanager.FileBackedTasksManager;
 import managers.taskmanager.InMemoryTaskManager;
 import managers.taskmanager.TaskManager;
-
-import java.io.File;
 
 public class Managers {
     public static TaskManager getDefault() {
