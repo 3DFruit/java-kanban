@@ -9,9 +9,9 @@ import java.nio.charset.StandardCharsets;
 
 public class KVTaskClient {
 
-    final String apiToken;
+    private final String apiToken;
 
-    final String serverURL;
+    private final String serverURL;
 
     public KVTaskClient(String serverURL) throws IOException, InterruptedException {
         this.serverURL = serverURL;

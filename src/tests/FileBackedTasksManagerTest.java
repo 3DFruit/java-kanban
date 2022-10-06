@@ -22,19 +22,19 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
     @Test
     public void testLoadEmptyHistory() {
-        manager = new FileBackedTasksManager(new File("resources/testEmptyHistory.csv"));
+        manager = FileBackedTasksManager.loadFromFile(new File("resources/testEmptyHistory.csv"));
         assertEquals(0, manager.getHistory().size());
     }
 
     @Test
     public void testLoadEmptyList() {
-        manager = new FileBackedTasksManager(new File("resources/testEmptyList.csv"));
+        manager = FileBackedTasksManager.loadFromFile(new File("resources/testEmptyList.csv"));
         assertEquals(0, manager.getTasks().size());
     }
 
     @Test
     public void testLoadEpicWithoutSubtasksList() {
-        manager = new FileBackedTasksManager(new File("resources/testEpicWithoutSubtasks.csv"));
+        manager = FileBackedTasksManager.loadFromFile(new File("resources/testEpicWithoutSubtasks.csv"));
         assertEquals(0, manager.getSubtasksOfEpic(2).size());
     }
 
@@ -50,7 +50,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         manager.addTask(new Subtask("Sub3", "desc3", Status.IN_PROGRESS, 15, LocalDateTime.now(), epicId));
         manager.addTask(new EpicTask("Epic2", "epic description"));
 
-        TaskManager savedManager = new FileBackedTasksManager(file);
+        TaskManager savedManager = new FileBackedTasksManager(file.getPath());
         assertEquals(0, savedManager.getHistory().size());
     }
 
@@ -64,7 +64,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         manager.addTask(new Subtask("Sub3", "desc3", Status.IN_PROGRESS, 15, LocalDateTime.now(), epicId));
         manager.addTask(new EpicTask("Epic2", "epic description"));
 
-        TaskManager savedManager = new FileBackedTasksManager(file);
+        TaskManager savedManager = new FileBackedTasksManager(file.getPath());
         assertEquals(0, savedManager.getTasks().size());
     }
 
@@ -77,12 +77,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         manager.addTask(new Task("task2", "very good description", Status.IN_PROGRESS, 15, LocalDateTime.now()));
         int epicId = manager.addTask(new EpicTask("Epic1", "very epic description"));
 
-        TaskManager savedManager = new FileBackedTasksManager(file);
+        TaskManager savedManager = new FileBackedTasksManager(file.getPath());
         assertEquals(0, savedManager.getSubtasksOfEpic(epicId).size());
     }
 
     private FileBackedTasksManager getClearManager(File file) {
-        FileBackedTasksManager manager = new FileBackedTasksManager(file);
+        FileBackedTasksManager manager = new FileBackedTasksManager(file.getPath());
         manager.removeAllTasks();
         manager.removeAllSubtasks();
         manager.removeAllEpicTasks();

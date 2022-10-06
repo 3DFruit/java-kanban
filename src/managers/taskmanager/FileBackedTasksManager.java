@@ -20,27 +20,16 @@ import java.util.List;
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy|HH:mm");
-    private final File filePath;
-
-
+    private final String path;
 
     private FileBackedTasksManager() { //используется для тестирования
         super();
-        this.filePath = new File("resources/history.csv");
+        this.path = "resources/history.csv";
     }
 
-    public FileBackedTasksManager(File filePath) {
+    public FileBackedTasksManager(String path) {
         super();
-        try {
-            if (filePath.createNewFile()) {
-                System.out.println("Файл создан");
-            }
-        }
-        catch  (IOException exception) {
-            exception.printStackTrace();
-        }
-        this.filePath = filePath;
-        load();
+        this.path = path;
     }
 
     public static void main(String[] args) {
@@ -68,11 +57,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-        private void load() throws ManagerSaveException {
+    public static FileBackedTasksManager loadFromFile(File file) throws ManagerSaveException{
         try {
-            String dataStream = Files.readString(Path.of(filePath.toString()), StandardCharsets.UTF_8);
+            if (file.createNewFile()) {
+                System.out.println("Файл создан");
+            }
+        }
+        catch  (IOException exception) {
+            exception.printStackTrace();
+        }
+        FileBackedTasksManager manager = new FileBackedTasksManager(file.getPath());
+        try {
+            String dataStream = Files.readString(Path.of(file.toString()), StandardCharsets.UTF_8);
             if (dataStream.isBlank()) {
-                return;
+                return manager;
             }
             int index = dataStream.lastIndexOf("\n\n"); //индекс на котором заканчиваются данные тасков
             String[] taskLines = dataStream.substring(0, index).split("\r?\n");
@@ -88,32 +86,33 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 //метод addTask автоматически присваивает id, который может не совпадать с прочитанным
                 //поэтому используем вспомогательный метод
                 if (task != null) {
-                    this.addTaskWithCustomId(task);
+                    manager.addTaskWithCustomId(task);
                 }
             }
-            nextId = Integer.max(maxId, 0);
+            manager.nextId = Integer.max(maxId, 0);
 
             String historyDataStream = dataStream.substring(index + 2);
             if (historyDataStream.isBlank()) {
-                return;
+                return manager;
             }
             List<Integer> history = historyFromString(historyDataStream);
             for (Integer element : history) {
-                if (subtasks.containsKey(element)) {
-                    getSubtaskById(element);
-                } else if (epicTasks.containsKey(element)) {
-                    getEpicTaskById(element);
-                } else if (tasks.containsKey(element)) {
-                    getTaskById(element);
+                if (manager.subtasks.containsKey(element)) {
+                    manager.getSubtaskById(element);
+                } else if (manager.epicTasks.containsKey(element)) {
+                    manager.getEpicTaskById(element);
+                } else if (manager.tasks.containsKey(element)) {
+                    manager.getTaskById(element);
                 }
             }
+            return manager;
 
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при чтении файла");
         }
     }
 
-    private void addTaskWithCustomId(Task task) {
+    protected void addTaskWithCustomId(Task task) {
         int id = task.getId();
         if (task instanceof EpicTask) {
             epicTasks.put(id, (EpicTask) task);
@@ -137,8 +136,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-    private void save() throws ManagerSaveException {
-        try (FileWriter writer = new FileWriter(filePath, StandardCharsets.UTF_8)) {
+    protected void save() throws ManagerSaveException {
+        try {
+            if (new File(path).createNewFile()) {
+                System.out.println("Файл создан");
+            }
+        }
+        catch  (IOException exception) {
+            exception.printStackTrace();
+        }
+        try (FileWriter writer = new FileWriter(path, StandardCharsets.UTF_8)) {
             writer.write("id,type,name,status,description,start_time,duration,epic\n");
             for (Task task : this.getTasks()) {
                 writer.write(toString(task));
@@ -212,7 +219,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         save();
     }
 
-    private String toString(Task task) {
+    private static String toString(Task task) {
         return String.join(",",
                 String.valueOf(task.getId()),
                 task.getClass().getSimpleName().toUpperCase(),
@@ -225,7 +232,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         );
     }
 
-    private Task fromString(String value) {
+    private static Task fromString(String value) {
         String[] items = value.split(",");
         int id = Integer.parseInt(items[0]);
         TaskType type = TaskType.valueOf(items[1]);
@@ -247,7 +254,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-    private static String historyToString(HistoryManager manager) {
+    protected static String historyToString(HistoryManager manager) {
         List<Task> list = manager.getHistory();
         StringBuilder builder = new StringBuilder();
         for (Task task : list) {
