@@ -1,10 +1,12 @@
-package managers.taskmanager;
+package managers.servers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import managers.taskmanager.FileBackedTasksManager;
+import managers.taskmanager.TaskManager;
 import tasks.EpicTask;
 import tasks.Subtask;
 import tasks.Task;
@@ -20,7 +22,7 @@ public class HttpTaskServer {
     final HttpServer httpServer;
 
     public HttpTaskServer(InetSocketAddress port) throws IOException {
-        this.manager = FileBackedTasksManager.loadFromFile(new File("resources/history.csv"));
+        this.manager = FileBackedTasksManager.loadFromFile(new File("resources/HttpServerFile.csv"));
         this.httpServer = HttpServer.create(port, 0);
         httpServer.createContext("/tasks/task/", new TaskHandler());
         httpServer.createContext("/tasks/epic/", new EpicHandler());

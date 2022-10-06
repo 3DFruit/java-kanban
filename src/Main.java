@@ -1,9 +1,5 @@
-import managers.taskmanager.HttpTaskServer;
-import managers.taskmanager.KVServer;
+import managers.servers.KVServer;
 import managers.taskmanager.KVTaskClient;
-
-import java.io.IOException;
-import java.net.InetSocketAddress;
 
 public class Main {
 

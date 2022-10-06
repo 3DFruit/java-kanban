@@ -75,12 +75,4 @@ public class KVTaskClient {
             return "Во время запроса произошла ошибка";
         }
     }
-
-    public String getApiToken() {
-        return apiToken;
-    }
-
-    public String getServerURL() {
-        return serverURL;
-    }
 }
