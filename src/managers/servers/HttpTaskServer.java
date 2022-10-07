@@ -83,8 +83,8 @@ public class HttpTaskServer {
         httpServer.start();
     }
 
-    public void stop() {
-        httpServer.stop(1);
+    public void stop(int delay) {
+        httpServer.stop(delay);
     }
 
     class TaskHandler implements HttpHandler {
@@ -130,12 +130,12 @@ public class HttpTaskServer {
                         if (manager.getTaskById(id) != null) {
                             manager.updateTask(receivedTask);
                             rCode = 200;
-                            response = "Задача с id=" + id + " обновлена";
+                            response = "" + id;
                         }
                         else {
                             int createdId = manager.addTask(receivedTask);
                             rCode = 201;
-                            response = "Создана задача с id=" + createdId;
+                            response = "" + createdId;
                         }
                     } catch (JsonSyntaxException e) {
                         response = "Неверный формат запроса";
@@ -249,11 +249,11 @@ public class HttpTaskServer {
                             if (manager.getEpicTaskById(id) != null) {
                                 manager.updateTask(receivedTask);
                                 rCode = 200;
-                                response = "Эпик с id=" + id + " обновлен";
+                                response = id + "";
                             } else {
                                 int createdId = manager.addTask(receivedTask);
                                 rCode = 201;
-                                response = "Создан эпик с id=" + createdId;
+                                response = "" + createdId;
                             }
                         }
                     } catch (JsonSyntaxException e) {
@@ -338,12 +338,12 @@ public class HttpTaskServer {
                         if (manager.getSubtaskById(id) != null) {
                             manager.updateTask(receivedTask);
                             rCode = 200;
-                            response = "Подзадача с id=" + id + " обновлена";
+                            response = "" + id;
                         }
                         else {
                             int createdId = manager.addTask(receivedTask);
                             rCode = 201;
-                            response = "Создана подзадача с id=" + createdId;
+                            response = "" + createdId;
                         }
                     } catch (JsonSyntaxException e) {
                         response = "Неверный формат запроса";
